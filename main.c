@@ -124,7 +124,7 @@ int main(int argc, char* argv[])
             inet_ntoa(server_address.sin_addr), ntohs(server_address.sin_port));
             
           char* command = strtok(nbuf, "\n");  //Split command
-          char* data = strtok(nbuf, "\n");            //And put rest into buffer
+          char* data = strtok(NULL, "\n");            //And put rest into buffer
           printf("%s\n",command);
           //fwrite(data,1,sizeof(data),stdout);
           
