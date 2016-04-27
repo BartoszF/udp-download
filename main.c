@@ -89,11 +89,14 @@ int main(int argc, char* argv[])
           printf("Sent! %s\n", message);
         
         part++;
-        if(part == parts) ret = NUM;
+        if(part == parts) 
+        {
+          ret = NUM;
+          part=0;
+        }
       }
       else
       {
-        part = 0;
         ret--;
       }
       
