@@ -69,14 +69,19 @@ int main(int argc, char* argv[])
       if(ret <= 0)
       {
         int start = part * PARTSIZE;
+		char* sstart;
+		sprintf(sstart, "%d", start);
         int l = PARTSIZE;
+		char* sl;
         
         if( start + l > PARTSIZE ) l = size - start;
+		
+		sprintf(sl, "%d", l);
         
         char message[32] = "GET ";
-        strcat(message, start);
+        strcat(message, sstart);
         strcat(message, " ");
-        strcat(message, l);
+        strcat(message, sl);
         strcat(message, "\n");
         ssize_t message_len = strlen(message);
   
@@ -118,13 +123,13 @@ int main(int argc, char* argv[])
           printf("Received packet from %s:%d\n\n",
             inet_ntoa(server_address.sin_addr), ntohs(server_address.sin_port));
             
-          char* command = strtok(nbuf, '\n');  //Split command
+          char* command = strtok(nbuf, "\n");  //Split command
           buf = strtok(nbuf, NULL);            //And put rest into buffer
           printf("%s\n",command);
           fwrite(nbuf,1,sizeof(nbuf),stdout);
           
-          strtok(command, ' ');
-          int sst = strtol(strtok(command, ' '), NULL, 10);
+          strtok(command, " ");
+          int sst = strtol(strtok(command, " "), NULL, 10);
           int ssi = strtol(strtok(command, NULL), NULL, 10);
           
           partsDone[sst/PARTSIZE] = TRUE;
