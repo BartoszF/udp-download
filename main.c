@@ -69,10 +69,10 @@ int main(int argc, char* argv[])
       if(ret <= 0)
       {
         int start = part * PARTSIZE;
-		char* sstart;
+		char sstart[6];
 		sprintf(sstart, "%d", start);
         int l = PARTSIZE;
-		char* sl;
+		char sl[6];
         
         if( start + l > PARTSIZE ) l = size - start;
 		
