@@ -90,8 +90,8 @@ int main(int argc, char* argv[])
           fprintf(stderr, "sendto error: %s\n", strerror(errno)); 
           return EXIT_FAILURE;		
         }
-        else
-          printf("Sent! %s\n", message);
+        //else
+          //printf("Sent! %s\n", message);
         
         part++;
         if(part == parts) 
@@ -147,8 +147,10 @@ int main(int argc, char* argv[])
       for(int i=0;i<parts;i++)
       {
         if(partsDone[i] == FALSE) break;
+		printf("%d ", i);
         pDone ++;
       }
+	  printf("\n");
       
       if( pDone == parts-1) break;
 
