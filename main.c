@@ -129,11 +129,13 @@ int main(int argc, char* argv[])
           //fwrite(data,1,sizeof(data),stdout);
           
           char* c = strtok(command, " ");
-          int sst = strtol(strtok(command, " "), NULL, 10);
-          int ssi = strtol(strtok(command, " "), NULL, 10);
+		  char* st = strtok(command, " ");
+		  char* si = strtok(command, " ");
+          int sst = strtol(st, NULL, 10);
+          int ssi = strtol(si, NULL, 10);
           
           partsDone[sst/PARTSIZE] = TRUE;
-		  printf("%s\n", command);
+		  printf("%s %s %s\n", command, st, si);
 		  printf("Part done : %d\nsst : %d\nssi : %d\n", sst/PARTSIZE, sst, ssi);
           for(int i=0;i<ssi;i++)
           {
