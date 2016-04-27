@@ -74,7 +74,7 @@ int main(int argc, char* argv[])
         int l = PARTSIZE;
 		char sl[6];
         
-        if( start + l > PARTSIZE ) l = size - start;
+        if( start + l > size ) l = size - start;
 		
 		sprintf(sl, "%d", l);
         
