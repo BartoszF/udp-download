@@ -64,7 +64,7 @@ int main(int argc, char* argv[])
   
   char buf[size];
 
-	while(done != 1)
+	while(done != TRUE)
 	{
       if(ret <= 0)
       {
@@ -156,9 +156,7 @@ int main(int argc, char* argv[])
       }
 	  //printf("\n");
       
-      if( pDone == parts-1) break;
-
-      
+      if( pDone >= parts-1) done = TRUE;
 	}
   FILE *pFile = NULL;
   pFile = fopen(file, "w");
