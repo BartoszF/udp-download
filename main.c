@@ -113,13 +113,13 @@ int main(int argc, char* argv[])
       }
       else
       {
-        if(server_address.sin_addr != *((struct in_addr *)host->h_addr_list[0]))  //Something like that?
+        /*if(server_address.sin_addr != *((struct in_addr *)host->h_addr_list[0]))  //Something like that?
         {
           printf("Wrong address!\n");
           continue;
         }
         else
-        {
+        {*/
           printf("Received packet from %s:%d\n\n",
             inet_ntoa(server_address.sin_addr), ntohs(server_address.sin_port));
             
@@ -140,7 +140,7 @@ int main(int argc, char* argv[])
           
           // Write to file part //
           //done = TRUE;
-        }
+        //}
       }
       
       int pDone = 0;
