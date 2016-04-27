@@ -113,27 +113,29 @@ int main(int argc, char* argv[])
           printf("Wrong address!\n");
           continue;
         }
-        printf("Received packet from %s:%d\n\n",
-          inet_ntoa(server_address.sin_addr), ntohs(server_address.sin_port));
-          
-        char* command = strtok(nbuf, '\n');  //Split command
-        buf = strtok(nbuf, NULL);            //And put rest into buffer
-        printf("%s\n",command);
-        fwrite(nbuf,1,sizeof(nbuf),stdout);
-        
-        strtok(command, ' ');
-        int sst = strtol(strtok(command, ' '), NULL, 10);
-        int ssi = strtol(strtok(command, NULL), NULL, 10);
-        
-        for(int i=0;i<ssi;i++)
+        else
         {
-          buf[sst+i] = nbuf[i];
+          printf("Received packet from %s:%d\n\n",
+            inet_ntoa(server_address.sin_addr), ntohs(server_address.sin_port));
+            
+          char* command = strtok(nbuf, '\n');  //Split command
+          buf = strtok(nbuf, NULL);            //And put rest into buffer
+          printf("%s\n",command);
+          fwrite(nbuf,1,sizeof(nbuf),stdout);
+          
+          strtok(command, ' ');
+          int sst = strtol(strtok(command, ' '), NULL, 10);
+          int ssi = strtol(strtok(command, NULL), NULL, 10);
+          
           partsDone[sst/PARTSIZE] = TRUE;
+          for(int i=0;i<ssi;i++)
+          {
+            buf[sst+i] = nbuf[i];
+          }
+          
+          // Write to file part //
+          //done = TRUE;
         }
-        
-        // Write to file part //
-        //done = TRUE;
-        
       }
       
       int pDone = 0;
