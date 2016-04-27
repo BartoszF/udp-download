@@ -124,9 +124,9 @@ int main(int argc, char* argv[])
             inet_ntoa(server_address.sin_addr), ntohs(server_address.sin_port));
             
           char* command = strtok(nbuf, "\n");  //Split command
-          buf = strtok(nbuf, NULL);            //And put rest into buffer
+          char* data = strtok(nbuf, NULL);            //And put rest into buffer
           printf("%s\n",command);
-          fwrite(nbuf,1,sizeof(nbuf),stdout);
+          //fwrite(data,1,sizeof(data),stdout);
           
           strtok(command, " ");
           int sst = strtol(strtok(command, " "), NULL, 10);
@@ -135,7 +135,7 @@ int main(int argc, char* argv[])
           partsDone[sst/PARTSIZE] = TRUE;
           for(int i=0;i<ssi;i++)
           {
-            buf[sst+i] = nbuf[i];
+            buf[sst+i] = data[i];
           }
           
           // Write to file part //
