@@ -109,7 +109,7 @@ int main(int argc, char* argv[])
     
       if (recvfrom(sockfd, nbuf, PARTSIZE + 11, 0, (struct sockaddr*) &server_address, (socklen_t*) &sin_size)==-1)
       { 
-        printf("Nope %d\n",size); 
+        //printf("Nope %d\n",size); 
       }
       else
       {
