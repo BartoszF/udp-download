@@ -133,10 +133,11 @@ int main(int argc, char* argv[])
           int ssi = strtol(strtok(command, " "), NULL, 10);
           
           partsDone[sst/PARTSIZE] = TRUE;
+		  printf("%s\n", command);
 		  printf("Part done : %d\nsst : %d\nssi : %d\n", sst/PARTSIZE, sst, ssi);
           for(int i=0;i<ssi;i++)
           {
-            buf[sst+i] = nbuf[i];
+            buf[sst+i] = data[i];
           }
           
           // Write to file part //
