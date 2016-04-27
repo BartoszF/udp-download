@@ -129,8 +129,8 @@ int main(int argc, char* argv[])
           //fwrite(data,1,sizeof(data),stdout);
           
           char* c = strtok(command, " ");
-		  char* st = strtok(command, " ");
-		  char* si = strtok(command, " ");
+		  char* st = strtok(NULL, " ");
+		  char* si = strtok(NULL, " ");
           int sst = strtol(st, NULL, 10);
           int ssi = strtol(si, NULL, 10);
           
