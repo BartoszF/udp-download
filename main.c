@@ -133,6 +133,7 @@ int main(int argc, char* argv[])
           int ssi = strtol(strtok(command, " "), NULL, 10);
           
           partsDone[sst/PARTSIZE] = TRUE;
+		  printf("Part done : %d\nsst : %d\nssi : %d\n", sst/PARTSIZE, sst, ssi);
           for(int i=0;i<ssi;i++)
           {
             buf[sst+i] = nbuf[i];
@@ -147,10 +148,10 @@ int main(int argc, char* argv[])
       for(int i=0;i<parts;i++)
       {
         if(partsDone[i] == FALSE) break;
-		printf("%d ", i);
+		//printf("%d ", i);
         pDone ++;
       }
-	  printf("\n");
+	  //printf("\n");
       
       if( pDone == parts-1) break;
 
