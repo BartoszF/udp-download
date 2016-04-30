@@ -50,11 +50,11 @@ int main(int argc, char* argv[])
 	
 	char *ip = inet_ntoa(server_address.sin_addr);
 	
-	//printf("%s\n",ip);
+	printf("%s\n",ip);
 	
 	int sin_size = sizeof(server_address);
 	
-	//printf("Ready!\n");
+	printf("Ready!\n");
 
 	int ret = 0;
 	
@@ -70,7 +70,7 @@ int main(int argc, char* argv[])
 	
 	char buf[size];
 	
-	printf("\r[ %d / %d ]", 0, parts);
+	printf("[ %d / %d ]", 0, parts);
 
 	while(done != TRUE)
 	{
@@ -97,7 +97,7 @@ int main(int argc, char* argv[])
 				
 				if (sendto(sockfd, message, message_len, 0, (struct sockaddr*) &server_address, sizeof(server_address)) != message_len) 
 				{
-					//fprintf(stderr, "sendto error: %s\n", strerror(errno)); 
+					fprintf(stderr, "sendto error: %s\n", strerror(errno)); 
 					//return EXIT_FAILURE;		
 				}
 			}
