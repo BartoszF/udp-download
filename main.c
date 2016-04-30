@@ -50,11 +50,11 @@ int main(int argc, char* argv[])
 	
 	char *ip = inet_ntoa(server_address.sin_addr);
 	
-	printf("%s\n",ip);
+	//printf("%s\n",ip);
 	
 	int sin_size = sizeof(server_address);
 	
-	printf("Ready!\n");
+	//printf("Ready!\n");
 
 	int ret = 0;
 	
@@ -76,7 +76,7 @@ int main(int argc, char* argv[])
 	{
 		if(ret <= 0)
 		{
-			if(partsDone[parts] == FALSE)
+			if(partsDone[part] == FALSE)
 			{
 				int start = part * PARTSIZE;
 				char sstart[6];
