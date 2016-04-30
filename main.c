@@ -3,11 +3,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include <unistd.h>
 #include <errno.h>
 #include <netdb.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <time.h>
 
 #define TRUE 1
 #define FALSE 0
@@ -123,7 +125,7 @@ int main(int argc, char* argv[])
 			  char* command = strtok(nbuf, "\n");
 			  char* data = strtok(NULL, "");
 			  
-			  char* c = strtok(command, " ");
+			  strtok(command, " ");
 			  char* st = strtok(NULL, " ");
 			  char* si = strtok(NULL, " ");
 			  int sst = strtol(st, NULL, 10);
