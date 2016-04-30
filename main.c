@@ -70,7 +70,7 @@ int main(int argc, char* argv[])
 	
 	char buf[size];
 	
-	printf("[ %d%%]", 0);
+	printf("[ %d / %d]", 0, parts);
 	
 	time_t wait = time(NULL);
 
@@ -148,7 +148,7 @@ int main(int argc, char* argv[])
 				}
 			  }
 			  
-			  printf("\r[ %d%% ]", ((int)((float)progress / (float)parts)) * parts);
+			  printf("\r[ %d / %d ]", progress, parts);
 			}
 			 
 			int pDone = 0;
@@ -170,6 +170,6 @@ int main(int argc, char* argv[])
 	   
 	close (sockfd);
 	
-	printf("\r[ %d%% ]\n", 100);
+	printf("\r[ %d / %d ]\n", progress, parts);
 	return EXIT_SUCCESS;
 }
