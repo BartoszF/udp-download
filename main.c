@@ -129,6 +129,7 @@ int main(int argc, char* argv[])
 			else
 			{
 			  char* command = strtok(nbuf, "\n");  //Split command
+			  printf("Received : %s\n", command);
 			  char* data = strtok(NULL, "");            //And put rest into buffer
 			  
 			  char* c = strtok(command, " ");
@@ -136,8 +137,6 @@ int main(int argc, char* argv[])
 			  char* si = strtok(NULL, " ");
 			  int sst = strtol(st, NULL, 10);
 			  int ssi = strtol(si, NULL, 10);
-			  
-			  printf("Received : %s\n", command);
 			  
 			  if(partsDone[sst/PARTSIZE] == FALSE)
 			  { 
