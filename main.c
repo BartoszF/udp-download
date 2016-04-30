@@ -105,6 +105,8 @@ int main(int argc, char* argv[])
 			{
 				ret = NUM;
 				part=0;
+				
+				printf("\33[2K\rDownloading... [ %d / %d ]", progress, parts);
 			}
 		}
 		else
@@ -164,8 +166,6 @@ int main(int argc, char* argv[])
 			}
 			 
 			if( pDone >= parts-1) done = TRUE;
-			
-			printf("\33[2K\rDownloading... [ %d / %d ]", progress, parts);
 	    }
 	}
 	   
