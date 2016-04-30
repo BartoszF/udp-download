@@ -158,7 +158,7 @@ int main(int argc, char* argv[])
 				pDone ++;
 			}
 			 
-			if( pDone >= parts-1) done = TRUE;
+			if( pDone >= parts) done = TRUE;
 	    }
 	}
 	   
