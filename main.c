@@ -13,7 +13,7 @@
 #define FALSE 0
 
 #define NUM 300
-#define PARTSIZE 200
+#define PARTSIZE 300
 
 int main(int argc, char* argv[])
 {
@@ -65,7 +65,8 @@ int main(int argc, char* argv[])
 	int partsDone[parts];
 	for(int i=0;i<parts;i++) partsDone[i] = FALSE;
 		
-		int part = 0;
+	int part = 0;
+	int progress = 0;
 	
 	char buf[size];
 
@@ -115,63 +116,65 @@ int main(int argc, char* argv[])
 		
 		if (recvfrom(sockfd, nbuf, PARTSIZE + 11, 0, (struct sockaddr*) &server_address, (socklen_t*) &sin_size)==-1)
 		{ 
-      //printf("Nope %d\n",size); 
+			//printf("Nope %d\n",size); 
 		}
 		else
 		{
 			char* new_ip = inet_ntoa(server_address.sin_addr);
 			int new_port = ntohs(server_address.sin_port);
-	    if(strcmp(ip,new_ip) != 0 || port != new_port)  //Something like that?
-	    {
-	    	printf("Wrong address!\n");
-	    	continue;
+			if(strcmp(ip,new_ip) != 0 || port != new_port)  //Something like that?
+			{
+				printf("Wrong address!\n");
+				continue;
+			}
+			else
+			{
+			  //printf("Received packet from %s:%d\n\n",
+			  //  inet_ntoa(server_address.sin_addr), ntohs(server_address.sin_port));
+				
+			  char* command = strtok(nbuf, "\n");  //Split command
+			  char* data = strtok(NULL, "\n");            //And put rest into buffer
+			  //printf("%s\n",command);
+			  //fwrite(data,1,sizeof(data),stdout);
+			  
+			  char* c = strtok(command, " ");
+			  char* st = strtok(NULL, " ");
+			  char* si = strtok(NULL, " ");
+			  int sst = strtol(st, NULL, 10);
+			  int ssi = strtol(si, NULL, 10);
+			  
+			  if(partsDone[sst/PARTSIZE] == FALSE)
+			  { 
+				partsDone[sst/PARTSIZE] = TRUE;
+				progress++;
+				printf("\33[2K\r[ %d / %d ]", progress, parts);
+					  //printf("%s %s %s\n", command, st, si);
+					  //printf("Part done : %d\nsst : %d\nssi : %d\n", sst/PARTSIZE, sst, ssi);
+				for(int i=0;i<ssi;i++)
+				{
+					buf[sst+i] = data[i];
+				}
+			  }
+			}
+			 
+			int pDone = 0;
+			for(int i=0;i<parts;i++)
+			{
+				if(partsDone[i] == FALSE) break;
+				pDone ++;
+			}
+			 
+			if( pDone >= parts-1) done = TRUE;
 	    }
-	    else
-	    {
-	      //printf("Received packet from %s:%d\n\n",
-	      //  inet_ntoa(server_address.sin_addr), ntohs(server_address.sin_port));
-	    	
-	      char* command = strtok(nbuf, "\n");  //Split command
-	      char* data = strtok(NULL, "\n");            //And put rest into buffer
-	      //printf("%s\n",command);
-	      //fwrite(data,1,sizeof(data),stdout);
-	      
-	      char* c = strtok(command, " ");
-	      char* st = strtok(NULL, " ");
-	      char* si = strtok(NULL, " ");
-	      int sst = strtol(st, NULL, 10);
-	      int ssi = strtol(si, NULL, 10);
-	      
-	      if(partsDone[sst/PARTSIZE] == FALSE)
-	      { 
-	      	partsDone[sst/PARTSIZE] = TRUE;
-				  //printf("%s %s %s\n", command, st, si);
-				  //printf("Part done : %d\nsst : %d\nssi : %d\n", sst/PARTSIZE, sst, ssi);
-	      	for(int i=0;i<ssi;i++)
-	      	{
-	      		buf[sst+i] = data[i];
-	      	}
-	      }
-	     }
-	     
-	     int pDone = 0;
-	     for(int i=0;i<parts;i++)
-	     {
-	     	if(partsDone[i] == FALSE) break;
-	     	pDone ++;
-	     }
-	     
-	     if( pDone >= parts-1) done = TRUE;
-	    }
-	   }
+	}
 	   
-	   FILE *pFile = NULL;
-	   pFile = fopen(file, "w");
+	FILE *pFile = NULL;
+	pFile = fopen(file, "w");
 
-	   fwrite(buf,1,sizeof(buf), pFile);
-	   fclose(pFile);
+	fwrite(buf,1,sizeof(buf), pFile);
+	fclose(pFile);
 	   
-	   close (sockfd);
-	   return EXIT_SUCCESS;
-	  }
+	close (sockfd);
+	return EXIT_SUCCESS;
+}
 	  
