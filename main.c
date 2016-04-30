@@ -70,7 +70,7 @@ int main(int argc, char* argv[])
 	
 	char buf[size];
 	
-	printf("[ %d / %d ]", 0, parts);
+	printf("[ %d\%]", 0);
 	
 	time_t wait = time(NULL);
 
@@ -78,9 +78,7 @@ int main(int argc, char* argv[])
 	{
 		if(wait <= time(NULL))
 		{
-			while(partsDone[part] != FALSE && part<= parts) part++;
-			
-			if(part<parts)
+			if(partsDone[part] != FALSE)
 			{
 				int start = part * PARTSIZE;
 				char sstart[6];
@@ -100,9 +98,7 @@ int main(int argc, char* argv[])
 				ssize_t message_len = strlen(message);
 				
 				if (sendto(sockfd, message, message_len, 0, (struct sockaddr*) &server_address, sizeof(server_address)) != message_len) 
-				{
-					//fprintf(stderr, "sendto error: %s\n", strerror(errno)); 
-					//return EXIT_FAILURE;		
+				{	
 				}
 				
 				part++;
@@ -119,7 +115,6 @@ int main(int argc, char* argv[])
 		
 		if (recvfrom(sockfd, nbuf, PARTSIZE + 32, 0, (struct sockaddr*) &server_address, (socklen_t*) &sin_size)==-1)
 		{ 
-			//printf("Nope %d\n",size); 
 		}
 		else
 		{
@@ -127,18 +122,12 @@ int main(int argc, char* argv[])
 			int new_port = ntohs(server_address.sin_port);
 			if(strcmp(ip,new_ip) != 0 || port != new_port)  //Something like that?
 			{
-				//printf("Wrong address!\n");
 				continue;
 			}
 			else
 			{
-			  //printf("Received packet from %s:%d\n\n",
-			  //  inet_ntoa(server_address.sin_addr), ntohs(server_address.sin_port));
-				
 			  char* command = strtok(nbuf, "\n");  //Split command
-			  char* data = strtok(NULL, "\n");            //And put rest into buffer
-			  //printf("%s\n",command);
-			  //fwrite(data,1,sizeof(data),stdout);
+			  char* data = strtok(NULL, "");            //And put rest into buffer
 			  
 			  char* c = strtok(command, " ");
 			  char* st = strtok(NULL, " ");
@@ -150,19 +139,16 @@ int main(int argc, char* argv[])
 			  { 
 				if(data != NULL)
 				{
-						  //printf("%s %s %s\n", command, st, si);
-						  //printf("Part done : %d\nsst : %d\nssi : %d\n", sst/PARTSIZE, sst, ssi);
 					for(int i=0;i<ssi;i++)
 					{
 						buf[sst+i] = data[i];
 					}
-					//printf("Copied\n");
 					partsDone[sst/PARTSIZE] = TRUE;
 					progress++;
 				}
 			  }
 			  
-			  printf("\r[ %d / %d ]", progress, parts);
+			  printf("\r[ %d\% ]", ((int)((float)progress / (float)parts)) * parts);
 			}
 			 
 			int pDone = 0;
@@ -184,6 +170,6 @@ int main(int argc, char* argv[])
 	   
 	close (sockfd);
 	
-	printf("\r[ %d / %d ]\n", progress, parts);
+	printf("\r[ %d\% ]\n", 100);
 	return EXIT_SUCCESS;
 }
