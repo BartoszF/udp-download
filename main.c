@@ -112,9 +112,9 @@ int main(int argc, char* argv[])
 			ret--;
 		}
 		
-		char nbuf[PARTSIZE + 11];
+		char nbuf[PARTSIZE + 32];
 		
-		if (recvfrom(sockfd, nbuf, PARTSIZE + 11, 0, (struct sockaddr*) &server_address, (socklen_t*) &sin_size)==-1)
+		if (recvfrom(sockfd, nbuf, PARTSIZE + 32, 0, (struct sockaddr*) &server_address, (socklen_t*) &sin_size)==-1)
 		{ 
 			//printf("Nope %d\n",size); 
 		}
@@ -147,7 +147,6 @@ int main(int argc, char* argv[])
 			  { 
 				partsDone[sst/PARTSIZE] = TRUE;
 				progress++;
-				printf("\33[2K\r[ %d / %d ]", progress, parts);
 					  //printf("%s %s %s\n", command, st, si);
 					  //printf("Part done : %d\nsst : %d\nssi : %d\n", sst/PARTSIZE, sst, ssi);
 				for(int i=0;i<ssi;i++)
@@ -165,6 +164,8 @@ int main(int argc, char* argv[])
 			}
 			 
 			if( pDone >= parts-1) done = TRUE;
+			
+			printf("\33[2K\rDownloading... [ %d / %d ]", progress, parts);
 	    }
 	}
 	   
@@ -175,6 +176,8 @@ int main(int argc, char* argv[])
 	fclose(pFile);
 	   
 	close (sockfd);
+	
+	printf("\n");
 	return EXIT_SUCCESS;
 }
 	  
