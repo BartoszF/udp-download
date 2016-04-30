@@ -12,7 +12,7 @@
 #define TRUE 1
 #define FALSE 0
 
-#define WAIT 5
+#define WAIT 3
 #define PARTSIZE 300
 
 int main(int argc, char* argv[])
@@ -78,7 +78,9 @@ int main(int argc, char* argv[])
 	{
 		if(wait <= time(NULL))
 		{
-			if(partsDone[part] == FALSE)
+			while(partsDone[part] != FALSE && part<= parts) part++;
+			
+			if(part<parts)
 			{
 				int start = part * PARTSIZE;
 				char sstart[6];
@@ -102,9 +104,10 @@ int main(int argc, char* argv[])
 					//fprintf(stderr, "sendto error: %s\n", strerror(errno)); 
 					//return EXIT_FAILURE;		
 				}
+				
+				part++;
 			}
 			
-			part++;
 			if(part == parts) 
 			{
 				wait = time(NULL) + WAIT;
@@ -129,12 +132,12 @@ int main(int argc, char* argv[])
 			}
 			else
 			{
-			  //printf("Received packet from %s:%d\n\n",
-			  //  inet_ntoa(server_address.sin_addr), ntohs(server_address.sin_port));
+			  printf("Received packet from %s:%d\n\n",
+			    inet_ntoa(server_address.sin_addr), ntohs(server_address.sin_port));
 				
 			  char* command = strtok(nbuf, "\n");  //Split command
 			  char* data = strtok(NULL, "\n");            //And put rest into buffer
-			  //printf("%s\n",command);
+			  printf("%s\n",command);
 			  //fwrite(data,1,sizeof(data),stdout);
 			  
 			  char* c = strtok(command, " ");
@@ -155,7 +158,7 @@ int main(int argc, char* argv[])
 				}
 			  }
 			  
-			  printf("\r[ %d / %d ]", progress, parts);
+			  //printf("\r[ %d / %d ]", progress, parts);
 			}
 			 
 			int pDone = 0;
