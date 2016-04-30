@@ -78,7 +78,7 @@ int main(int argc, char* argv[])
 	{
 		if(wait <= time(NULL))
 		{
-			if(partsDone[part] != FALSE)
+			if(partsDone[part] == FALSE)
 			{
 				int start = part * PARTSIZE;
 				char sstart[6];
