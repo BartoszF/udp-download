@@ -69,6 +69,8 @@ int main(int argc, char* argv[])
 	int progress = 0;
 	
 	char buf[size];
+	
+	printf("\r[ %d / %d ]", 0, parts);
 
 	while(done != TRUE)
 	{
@@ -95,8 +97,8 @@ int main(int argc, char* argv[])
 				
 				if (sendto(sockfd, message, message_len, 0, (struct sockaddr*) &server_address, sizeof(server_address)) != message_len) 
 				{
-					fprintf(stderr, "sendto error: %s\n", strerror(errno)); 
-					return EXIT_FAILURE;		
+					//fprintf(stderr, "sendto error: %s\n", strerror(errno)); 
+					//return EXIT_FAILURE;		
 				}
 			}
 			
@@ -105,8 +107,6 @@ int main(int argc, char* argv[])
 			{
 				ret = NUM;
 				part=0;
-				
-				printf("\33[2K\rDownloading... [ %d / %d ]", progress, parts);
 			}
 		}
 		else
@@ -156,6 +156,8 @@ int main(int argc, char* argv[])
 					buf[sst+i] = data[i];
 				}
 			  }
+			  
+			  printf("\r[ %d / %d ]", progress, parts);
 			}
 			 
 			int pDone = 0;
