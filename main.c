@@ -119,7 +119,6 @@ int main(int argc, char* argv[])
 		}
 		else
 		{
-			
 			char* new_ip = inet_ntoa(server_address.sin_addr);
 			int new_port = ntohs(server_address.sin_port);
 			if(strcmp(ip,new_ip) != 0 || port != new_port)  //Something like that?
@@ -148,6 +147,7 @@ int main(int argc, char* argv[])
 						buf[sst+i] = data[i];
 					}
 					partsDone[sst/PARTSIZE] = TRUE;
+					printf("Done : %d\n",sst/PARTSIZE);
 					progress++;
 					printf("Progress++\n");
 				}
