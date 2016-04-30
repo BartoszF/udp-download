@@ -148,15 +148,18 @@ int main(int argc, char* argv[])
 			  
 			  if(partsDone[sst/PARTSIZE] == FALSE)
 			  { 
-				partsDone[sst/PARTSIZE] = TRUE;
-				progress++;
-					  printf("%s %s %s\n", command, st, si);
-					  printf("Part done : %d\nsst : %d\nssi : %d\n", sst/PARTSIZE, sst, ssi);
-				for(int i=0;i<ssi;i++)
+				if(data != NULL)
 				{
-					buf[sst+i] = data[i];
+						  printf("%s %s %s\n", command, st, si);
+						  printf("Part done : %d\nsst : %d\nssi : %d\n", sst/PARTSIZE, sst, ssi);
+					for(int i=0;i<ssi;i++)
+					{
+						buf[sst+i] = data[i];
+					}
+					printf("Copied\n");
+					partsDone[sst/PARTSIZE] = TRUE;
+					progress++;
 				}
-				printf("Copied\n");
 			  }
 			  
 			  printf("[ %d / %d ]", progress, parts);
@@ -184,4 +187,3 @@ int main(int argc, char* argv[])
 	printf("\n");
 	return EXIT_SUCCESS;
 }
-	  
