@@ -12,7 +12,7 @@
 #define TRUE 1
 #define FALSE 0
 
-#define NUM 300
+#define WAIT 5
 #define PARTSIZE 300
 
 int main(int argc, char* argv[])
@@ -71,10 +71,12 @@ int main(int argc, char* argv[])
 	char buf[size];
 	
 	printf("[ %d / %d ]", 0, parts);
+	
+	time_t wait = time(NULL);
 
 	while(done != TRUE)
 	{
-		if(ret <= 0)
+		if(wait <= time(NULL))
 		{
 			if(partsDone[part] == FALSE)
 			{
@@ -97,7 +99,7 @@ int main(int argc, char* argv[])
 				
 				if (sendto(sockfd, message, message_len, 0, (struct sockaddr*) &server_address, sizeof(server_address)) != message_len) 
 				{
-					fprintf(stderr, "sendto error: %s\n", strerror(errno)); 
+					//fprintf(stderr, "sendto error: %s\n", strerror(errno)); 
 					//return EXIT_FAILURE;		
 				}
 			}
@@ -105,13 +107,9 @@ int main(int argc, char* argv[])
 			part++;
 			if(part == parts) 
 			{
-				ret = NUM;
+				wait = time(NULL) + WAIT;
 				part=0;
 			}
-		}
-		else
-		{
-			ret--;
 		}
 		
 		char nbuf[PARTSIZE + 32];
