@@ -49,11 +49,11 @@ int main(int argc, char* argv[])
 	
 	char *ip = inet_ntoa(server_address.sin_addr);
 	
-	printf("%s\n",ip);
+	//printf("%s\n",ip);
   
   int sin_size = sizeof(server_address);
 	
-	printf("Ready!\n");
+	//printf("Ready!\n");
 
 	int ret = 0;
   
@@ -72,30 +72,31 @@ int main(int argc, char* argv[])
 	{
       if(ret <= 0)
       {
-        int start = part * PARTSIZE;
-		char sstart[6];
-		sprintf(sstart, "%d", start);
-        int l = PARTSIZE;
-		char sl[6];
-        
-        if( start + l > size ) l = size - start;
-		
-		sprintf(sl, "%d", l);
-        
-        char message[32] = "GET ";
-        strcat(message, sstart);
-        strcat(message, " ");
-        strcat(message, sl);
-        strcat(message, "\n");
-        ssize_t message_len = strlen(message);
-  
-        if (sendto(sockfd, message, message_len, 0, (struct sockaddr*) &server_address, sizeof(server_address)) != message_len) 
-        {
-          fprintf(stderr, "sendto error: %s\n", strerror(errno)); 
-          return EXIT_FAILURE;		
-        }
-        //else
-          //printf("Sent! %s\n", message);
+		if(partsDone[parts] == FALSE)
+		{
+			int start = part * PARTSIZE;
+			char sstart[6];
+			sprintf(sstart, "%d", start);
+			int l = PARTSIZE;
+			char sl[6];
+			
+			if( start + l > size ) l = size - start;
+			
+			sprintf(sl, "%d", l);
+			
+			char message[32] = "GET ";
+			strcat(message, sstart);
+			strcat(message, " ");
+			strcat(message, sl);
+			strcat(message, "\n");
+			ssize_t message_len = strlen(message);
+	  
+			if (sendto(sockfd, message, message_len, 0, (struct sockaddr*) &server_address, sizeof(server_address)) != message_len) 
+			{
+			  fprintf(stderr, "sendto error: %s\n", strerror(errno)); 
+			  return EXIT_FAILURE;		
+			}
+		}
         
         part++;
         if(part == parts) 
@@ -117,19 +118,21 @@ int main(int argc, char* argv[])
       }
       else
       {
-        /*if(server_address.sin_addr != *((struct in_addr *)host->h_addr_list[0]))  //Something like that?
+		char* new_ip = inet_ntoa(server_address.sin_addr);
+		int new_port = ntohs(server_address.sin_port);
+        if(strcmp(ip,new_ip) != 0 || port != new_port)  //Something like that?
         {
           printf("Wrong address!\n");
           continue;
         }
         else
-        {*/
-          printf("Received packet from %s:%d\n\n",
-            inet_ntoa(server_address.sin_addr), ntohs(server_address.sin_port));
+        {
+          //printf("Received packet from %s:%d\n\n",
+          //  inet_ntoa(server_address.sin_addr), ntohs(server_address.sin_port));
             
           char* command = strtok(nbuf, "\n");  //Split command
           char* data = strtok(NULL, "\n");            //And put rest into buffer
-          printf("%s\n",command);
+          //printf("%s\n",command);
           //fwrite(data,1,sizeof(data),stdout);
           
           char* c = strtok(command, " ");
@@ -137,37 +140,34 @@ int main(int argc, char* argv[])
 		  char* si = strtok(NULL, " ");
           int sst = strtol(st, NULL, 10);
           int ssi = strtol(si, NULL, 10);
-          
-          partsDone[sst/PARTSIZE] = TRUE;
-		  printf("%s %s %s\n", command, st, si);
-		  printf("Part done : %d\nsst : %d\nssi : %d\n", sst/PARTSIZE, sst, ssi);
-          for(int i=0;i<ssi;i++)
-          {
-            buf[sst+i] = data[i];
-          }
-          
-          // Write to file part //
-          //done = TRUE;
-        //}
+		  
+		  if(partsDone[sst/PARTSIZE] == FALSE)
+		  { 
+			  partsDone[sst/PARTSIZE] = TRUE;
+			  //printf("%s %s %s\n", command, st, si);
+			  //printf("Part done : %d\nsst : %d\nssi : %d\n", sst/PARTSIZE, sst, ssi);
+			  for(int i=0;i<ssi;i++)
+			  {
+				buf[sst+i] = data[i];
+			  }
+		   }
       }
       
       int pDone = 0;
       for(int i=0;i<parts;i++)
       {
         if(partsDone[i] == FALSE) break;
-		//printf("%d ", i);
         pDone ++;
       }
-	  //printf("\n");
       
       if( pDone >= parts-1) done = TRUE;
 	}
-  FILE *pFile = NULL;
-  pFile = fopen(file, "w");
+	
+	FILE *pFile = NULL;
+	pFile = fopen(file, "w");
 
-  fwrite(buf,1,sizeof(buf), pFile);
-  //fprintf(pFile, "%s", buf);
-  fclose(pFile);
+	fwrite(buf,1,sizeof(buf), pFile);
+	fclose(pFile);
         
 	close (sockfd);
 	return EXIT_SUCCESS;
