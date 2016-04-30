@@ -156,6 +156,7 @@ int main(int argc, char* argv[])
 				{
 					buf[sst+i] = data[i];
 				}
+				printf("Copied\n");
 			  }
 			  
 			  printf("[ %d / %d ]", progress, parts);
