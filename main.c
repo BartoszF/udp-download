@@ -46,17 +46,10 @@ int main(int argc, char* argv[])
 	server_address.sin_family      = AF_INET;
 	server_address.sin_port        = htons(port);
 	server_address.sin_addr = *((struct in_addr *)host->h_addr_list[0]);
-	//inet_pton(AF_INET, "aisd.ii.uni.wroc.pl", &server_address.sin_addr);
 	
 	char *ip = inet_ntoa(server_address.sin_addr);
 	
-	//printf("%s\n",ip);
-	
 	int sin_size = sizeof(server_address);
-	
-	//printf("Ready!\n");
-
-	int ret = 0;
 	
 	int done = FALSE;
 	int parts = size / PARTSIZE;
@@ -107,7 +100,6 @@ int main(int argc, char* argv[])
 			
 			if(part >= parts) 
 			{
-				printf("Wait!\n");
 				wait = (progress > parts - parts/100) ? time(NULL) + 1 : time(NULL) + WAIT;
 				part=0;
 			}
@@ -122,15 +114,14 @@ int main(int argc, char* argv[])
 		{
 			char* new_ip = inet_ntoa(server_address.sin_addr);
 			int new_port = ntohs(server_address.sin_port);
-			if(strcmp(ip,new_ip) != 0 || port != new_port)  //Something like that?
+			if(strcmp(ip,new_ip) != 0 || port != new_port)
 			{
 				continue;
 			}
 			else
 			{
-			  char* command = strtok(nbuf, "\n");  //Split command
-			  printf("Received : %s\n", command);
-			  char* data = strtok(NULL, "");            //And put rest into buffer
+			  char* command = strtok(nbuf, "\n");
+			  char* data = strtok(NULL, "");
 			  
 			  char* c = strtok(command, " ");
 			  char* st = strtok(NULL, " ");
@@ -142,15 +133,12 @@ int main(int argc, char* argv[])
 			  { 
 				if(data != NULL)
 				{
-					printf("Not null\n");
 					for(int i=0;i<ssi;i++)
 					{
 						buf[sst+i] = data[i];
 					}
 					partsDone[sst/PARTSIZE] = TRUE;
-					printf("Done : %d\n",sst/PARTSIZE);
 					progress++;
-					printf("Progress++\n");
 				}
 			  }
 			  
