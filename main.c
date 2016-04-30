@@ -78,7 +78,8 @@ int main(int argc, char* argv[])
 	{
 		if(wait <= time(NULL))
 		{
-			if(partsDone[part] == FALSE)
+			while(artsDone[part] != FALSE && part < parts) part++;
+			if(part<parts)
 			{
 				int start = part * PARTSIZE;
 				char sstart[6];
@@ -104,10 +105,10 @@ int main(int argc, char* argv[])
 				part++;
 			}
 			
-			if(part == parts) 
+			if(part >= parts) 
 			{
 				printf("Wait!\n");
-				wait = (progress > parts - parts/100) ? time(NULL) + WAIT : time(NULL) + 1;
+				wait = (progress > parts - parts/100) ? time(NULL) + 1 : time(NULL) + WAIT;
 				part=0;
 			}
 		}
