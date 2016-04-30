@@ -106,6 +106,7 @@ int main(int argc, char* argv[])
 			
 			if(part == parts) 
 			{
+				printf("Wait!\n");
 				wait = (progress > parts - parts/100) ? time(NULL) + WAIT : time(NULL) + 1;
 				part=0;
 			}
@@ -118,6 +119,7 @@ int main(int argc, char* argv[])
 		}
 		else
 		{
+			
 			char* new_ip = inet_ntoa(server_address.sin_addr);
 			int new_port = ntohs(server_address.sin_port);
 			if(strcmp(ip,new_ip) != 0 || port != new_port)  //Something like that?
@@ -135,16 +137,20 @@ int main(int argc, char* argv[])
 			  int sst = strtol(st, NULL, 10);
 			  int ssi = strtol(si, NULL, 10);
 			  
+			  printf("Received : %s\n", command);
+			  
 			  if(partsDone[sst/PARTSIZE] == FALSE)
 			  { 
 				if(data != NULL)
 				{
+					printf("Not null\n");
 					for(int i=0;i<ssi;i++)
 					{
 						buf[sst+i] = data[i];
 					}
 					partsDone[sst/PARTSIZE] = TRUE;
 					progress++;
+					printf("Progress++\n");
 				}
 			  }
 			  
