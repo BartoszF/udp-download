@@ -71,7 +71,7 @@ int main(int argc, char* argv[])
 	{
 		if(wait <= time(NULL))
 		{
-			while(artsDone[part] != FALSE && part < parts) part++;
+			while(partsDone[part] != FALSE && part < parts) part++;
 			if(part<parts)
 			{
 				int start = part * PARTSIZE;
