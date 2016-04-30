@@ -13,7 +13,7 @@
 #define FALSE 0
 
 #define WAIT 3
-#define PARTSIZE 300
+#define PARTSIZE 400
 
 int main(int argc, char* argv[])
 {
@@ -110,7 +110,7 @@ int main(int argc, char* argv[])
 			
 			if(part == parts) 
 			{
-				wait = (progress > parts - parts/100) ? time(NULL) + WAIT : time(NULL);
+				wait = (progress > parts - parts/100) ? time(NULL) + WAIT : time(NULL) + 1;
 				part=0;
 			}
 		}
@@ -127,17 +127,17 @@ int main(int argc, char* argv[])
 			int new_port = ntohs(server_address.sin_port);
 			if(strcmp(ip,new_ip) != 0 || port != new_port)  //Something like that?
 			{
-				printf("Wrong address!\n");
+				//printf("Wrong address!\n");
 				continue;
 			}
 			else
 			{
-			  printf("Received packet from %s:%d\n\n",
-			    inet_ntoa(server_address.sin_addr), ntohs(server_address.sin_port));
+			  //printf("Received packet from %s:%d\n\n",
+			  //  inet_ntoa(server_address.sin_addr), ntohs(server_address.sin_port));
 				
 			  char* command = strtok(nbuf, "\n");  //Split command
 			  char* data = strtok(NULL, "\n");            //And put rest into buffer
-			  printf("%s\n",command);
+			  //printf("%s\n",command);
 			  //fwrite(data,1,sizeof(data),stdout);
 			  
 			  char* c = strtok(command, " ");
@@ -150,19 +150,19 @@ int main(int argc, char* argv[])
 			  { 
 				if(data != NULL)
 				{
-						  printf("%s %s %s\n", command, st, si);
-						  printf("Part done : %d\nsst : %d\nssi : %d\n", sst/PARTSIZE, sst, ssi);
+						  //printf("%s %s %s\n", command, st, si);
+						  //printf("Part done : %d\nsst : %d\nssi : %d\n", sst/PARTSIZE, sst, ssi);
 					for(int i=0;i<ssi;i++)
 					{
 						buf[sst+i] = data[i];
 					}
-					printf("Copied\n");
+					//printf("Copied\n");
 					partsDone[sst/PARTSIZE] = TRUE;
 					progress++;
 				}
 			  }
 			  
-			  printf("[ %d / %d ]", progress, parts);
+			  printf("\r[ %d / %d ]", progress, parts);
 			}
 			 
 			int pDone = 0;
@@ -184,6 +184,6 @@ int main(int argc, char* argv[])
 	   
 	close (sockfd);
 	
-	printf("[ %d / %d ]\n", progress, parts);
+	printf("\r[ %d / %d ]\n", progress, parts);
 	return EXIT_SUCCESS;
 }
