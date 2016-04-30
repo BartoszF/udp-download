@@ -150,15 +150,15 @@ int main(int argc, char* argv[])
 			  { 
 				partsDone[sst/PARTSIZE] = TRUE;
 				progress++;
-					  //printf("%s %s %s\n", command, st, si);
-					  //printf("Part done : %d\nsst : %d\nssi : %d\n", sst/PARTSIZE, sst, ssi);
+					  printf("%s %s %s\n", command, st, si);
+					  printf("Part done : %d\nsst : %d\nssi : %d\n", sst/PARTSIZE, sst, ssi);
 				for(int i=0;i<ssi;i++)
 				{
 					buf[sst+i] = data[i];
 				}
 			  }
 			  
-			  //printf("\r[ %d / %d ]", progress, parts);
+			  printf("[ %d / %d ]", progress, parts);
 			}
 			 
 			int pDone = 0;
