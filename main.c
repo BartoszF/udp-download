@@ -110,7 +110,7 @@ int main(int argc, char* argv[])
 			
 			if(part == parts) 
 			{
-				wait = time(NULL) + WAIT;
+				wait = (progress > parts - parts/100) ? time(NULL) + WAIT : time(NULL);
 				part=0;
 			}
 		}
@@ -184,6 +184,6 @@ int main(int argc, char* argv[])
 	   
 	close (sockfd);
 	
-	printf("\n");
+	printf("[ %d / %d ]\n", progress, parts);
 	return EXIT_SUCCESS;
 }
