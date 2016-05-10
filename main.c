@@ -49,6 +49,9 @@ int main(int argc, char* argv[])
 	server_address.sin_port        = htons(port);
 	server_address.sin_addr = *((struct in_addr *)host->h_addr_list[0]);
 	
+	struct sockaddr_in new_server_address;
+	bzero (&new_server_address, sizeof(new_server_address));
+	
 	char *ip = inet_ntoa(server_address.sin_addr);
 	
 	int sin_size = sizeof(server_address);
@@ -109,13 +112,14 @@ int main(int argc, char* argv[])
 		
 		char nbuf[PARTSIZE + 32];
 		
-		if (recvfrom(sockfd, nbuf, PARTSIZE + 32, 0, (struct sockaddr*) &server_address, (socklen_t*) &sin_size)==-1)
+		bzero (&new_server_address, sizeof(new_server_address));
+		if (recvfrom(sockfd, nbuf, PARTSIZE + 32, 0, (struct sockaddr*) &new_server_address, (socklen_t*) &sin_size)==-1)
 		{ 
 		}
 		else
 		{
-			char* new_ip = inet_ntoa(server_address.sin_addr);
-			int new_port = ntohs(server_address.sin_port);
+			char* new_ip = inet_ntoa(new_server_address.sin_addr);
+			int new_port = ntohs(new_server_address.sin_port);
 			if(strcmp(ip,new_ip) != 0 || port != new_port)
 			{
 				continue;
